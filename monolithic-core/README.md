@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Task Dungeon (TaskRiser)
 
-## Getting Started
+Task Dungeon là một ứng dụng quản lý nhiệm vụ (task/quest) gamification, sử dụng Next.js (Pages Router + App Router), Prisma, PostgreSQL, Tailwind CSS và React.
 
-First, run the development server:
+## Yêu cầu hệ thống
+
+- Node.js >= 18
+- npm >= 9
+- PostgreSQL (hoặc dịch vụ cloud PostgreSQL)
+
+## Hướng dẫn cài đặt và chạy dự án
+
+### 1. Clone repository
+
+```bash
+git clone <repo-url>
+cd monolithic-core
+```
+
+### 2. Cài đặt dependencies
+
+```bash
+npm install
+```
+
+### 3. Cấu hình biến môi trường
+
+Tạo file `.env` ở thư mục gốc với nội dung mẫu:
+
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
+JWT_SECRET="your_jwt_secret"
+```
+
+- Thay các giá trị bằng thông tin kết nối PostgreSQL thật của bạn.
+
+### 4. Khởi tạo database với Prisma
+
+```bash
+npx prisma migrate dev --name init
+```
+
+Lệnh này sẽ tạo bảng và dữ liệu mẫu (nếu có) theo schema trong `prisma/schema.prisma`.
+
+### 5. Chạy server phát triển
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Truy cập [http://localhost:3000](http://localhost:3000) để sử dụng ứng dụng.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Các lệnh hữu ích
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run build`: Build production
+- `npm start`: Chạy production
+- `npx prisma studio`: Giao diện quản lý database
 
-## Learn More
+## Công nghệ sử dụng
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js (Pages + App Router)
+- React 19
+- Tailwind CSS 4
+- Prisma ORM
+- PostgreSQL
+- React Hot Toast, React Icons
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Lưu ý
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Nếu gặp lỗi về line ending (LF/CRLF) khi dùng Git trên Windows, có thể bỏ qua hoặc cấu hình git như hướng dẫn trong cảnh báo.
+- Nếu gặp lỗi module không tìm thấy, hãy chắc chắn đã chạy `npm install`.
