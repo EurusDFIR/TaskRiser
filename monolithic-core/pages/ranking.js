@@ -246,7 +246,6 @@ export default function RankingPage() {
   currentUser.rank = currentUserRankInfo !== -1 ? currentUserRankInfo + 1 : 'N/A';
   const currentUserLevel = calculateLevel(currentUser.totalExp);
   const expForNext = expForNextLevel(currentUserLevel);
-  const expForCurrent = expForNextLevel(currentUserLevel -1) || 0;
   currentUser.expNeeded = expForNext - currentUser.totalExp;
 
 
@@ -264,12 +263,12 @@ export default function RankingPage() {
   return (
     <>
       <Head>
-        <title>Hunter Ranking - System Panel</title>
+        <title>TaskRiser - System Panel</title>
         {/* Optional: Add a Solo Leveling-esque favicon */}
       </Head>
-      <div className="min-h-screen bg-gray-950 text-slate-300 font-['Orbitron',_sans-serif]"> {/* Orbitron or similar sci-fi font */}
+      <div className="min-h-screen bg-gradient-to-br from-[#caf0f8] via-[#ade8f4] to-[#90e0ef] text-[#03045e] font-['Orbitron',_sans-serif] backdrop-blur-xl">
         {/* Header */}
-        <div className="bg-black/70 backdrop-blur-md p-4 flex justify-between items-center border-b border-purple-600/30 shadow-lg sticky top-0 z-50">
+        <div className="bg-[#f8fdff]/80 backdrop-blur-md p-4 flex justify-between items-center border-b border-[#90e0ef]/60 shadow-lg sticky top-0 z-50">
           <div className="flex items-center">
             <GiDoubleDragon size={36} className="text-purple-500 mr-3 drop-shadow-[0_0_5px_rgba(168,85,247,0.7)]" />
             <h1 className="text-3xl font-bold tracking-wider">

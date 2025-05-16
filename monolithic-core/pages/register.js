@@ -75,21 +75,23 @@ export default function RegisterPage() {
   return (
     <>
       <Head>
-        <title>Create Account - Task Dungeon</title>
+        <title>Create Account - TaskRiser</title>
       </Head>
-      <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4 text-gray-300">
-        <div className="w-full max-w-md bg-gray-800 p-8 rounded-lg shadow-xl border border-purple-700">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 text-[#03045e] font-['Orbitron',_sans-serif] relative overflow-hidden bg-gradient-to-br from-[#caf0f8] via-[#ade8f4] to-[#90e0ef] backdrop-blur-xl">
+        <div className="absolute -top-20 -left-20 w-72 h-72 bg-[#48cae4]/30 rounded-full filter blur-3xl opacity-60 animate-pulse"></div>
+        <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-[#00b4d8]/30 rounded-full filter blur-3xl opacity-60 animate-pulse animation-delay-2000"></div>
+        <div className="w-full max-w-md bg-[#f8fdff]/80 backdrop-blur-lg p-8 rounded-xl shadow-2xl border-2 border-[#90e0ef]/60 z-10">
           <div className="text-center mb-8">
-            <div className="inline-block p-3 bg-purple-600 rounded-full mb-3">
+            <div className="inline-block p-3 bg-[#0077b6] rounded-full mb-3">
               <GiCastle size={40} className="text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-purple-400">TASK DUNGEON</h1>
-            <p className="text-gray-400 mt-1">Create your hunter account</p>
+            <h1 className="text-4xl font-bold text-[#0077b6]">TASK RISER</h1>
+            <p className="text-[#0096c7] mt-1">Create your hunter account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-400">
+              <label htmlFor="fullName" className="block text-sm font-medium text-[#0077b6]">
                 Full Name
               </label>
               <input
@@ -97,14 +99,14 @@ export default function RegisterPage() {
                 id="fullName"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 bg-[#caf0f8] border border-[#90e0ef] rounded-md shadow-sm placeholder-[#48cae4] focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] sm:text-sm text-[#03045e]"
                 placeholder="Enter your full name"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-400">
+              <label htmlFor="username" className="block text-sm font-medium text-[#0077b6]">
                 Username
               </label>
               <input
@@ -112,14 +114,14 @@ export default function RegisterPage() {
                 id="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 bg-[#caf0f8] border border-[#90e0ef] rounded-md shadow-sm placeholder-[#48cae4] focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] sm:text-sm text-[#03045e]"
                 placeholder="Choose a username"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-400">
+              <label htmlFor="email" className="block text-sm font-medium text-[#0077b6]">
                 Email (Optional)
               </label>
               <input
@@ -127,13 +129,13 @@ export default function RegisterPage() {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 bg-[#caf0f8] border border-[#90e0ef] rounded-md shadow-sm placeholder-[#48cae4] focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] sm:text-sm text-[#03045e]"
                 placeholder="Enter your email"
               />
             </div>
 
             <div className="relative">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-400">
+              <label htmlFor="password" className="block text-sm font-medium text-[#0077b6]">
                 Password
               </label>
               <input
@@ -141,7 +143,7 @@ export default function RegisterPage() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 bg-[#caf0f8] border border-[#90e0ef] rounded-md shadow-sm placeholder-[#48cae4] focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] sm:text-sm text-[#03045e]"
                 placeholder="Create a password"
                 required
                 minLength={6}
@@ -149,7 +151,7 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-gray-500 hover:text-gray-300"
+                className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-[#48cae4] hover:text-[#0077b6]"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -159,7 +161,7 @@ export default function RegisterPage() {
             <div className="relative">
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-400"
+                className="block text-sm font-medium text-[#0077b6]"
               >
                 Confirm Password
               </label>
@@ -168,14 +170,14 @@ export default function RegisterPage() {
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 bg-[#caf0f8] border border-[#90e0ef] rounded-md shadow-sm placeholder-[#48cae4] focus:outline-none focus:ring-2 focus:ring-[#00b4d8] focus:border-[#00b4d8] sm:text-sm text-[#03045e]"
                 placeholder="Confirm your password"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-gray-500 hover:text-gray-300"
+                className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-[#48cae4] hover:text-[#0077b6]"
                 aria-label={showConfirmPassword ? "Hide password" : "Show password"}
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -189,27 +191,27 @@ export default function RegisterPage() {
                 type="checkbox"
                 checked={agreeTerms}
                 onChange={(e) => setAgreeTerms(e.target.checked)}
-                className="h-4 w-4 text-purple-600 border-gray-500 rounded focus:ring-purple-500"
+                className="h-4 w-4 text-[#00b4d8] border-[#90e0ef] rounded focus:ring-[#00b4d8]"
               />
-              <label htmlFor="agreeTerms" className="ml-2 block text-sm text-gray-400">
+              <label htmlFor="agreeTerms" className="ml-2 block text-sm text-[#0077b6]">
                 I agree to the{' '}
-                <a href="/terms" className="font-medium text-purple-400 hover:text-purple-300">
+                <a href="/terms" className="font-medium text-[#0096c7] hover:text-[#0077b6]">
                   Terms of Service
                 </a>{' '}
                 and{' '}
-                <a href="/privacy" className="font-medium text-purple-400 hover:text-purple-300">
+                <a href="/privacy" className="font-medium text-[#0096c7] hover:text-[#0077b6]">
                   Privacy Policy
                 </a>
               </label>
             </div>
 
-            {error && <p className="text-sm text-red-400">{error}</p>}
+            {error && <p className="text-sm text-[#d90429]">{error}</p>}
 
             <div>
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 focus:ring-offset-gray-800 disabled:opacity-50"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#0077b6] to-[#00b4d8] hover:from-[#0096c7] hover:to-[#48cae4] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00b4d8] focus:ring-offset-[#caf0f8] disabled:opacity-50 transition-all"
               >
                 {loading ? 'Creating Account...' : 'Create Account'}
               </button>
@@ -217,9 +219,9 @@ export default function RegisterPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-[#0077b6]">
               Already have an account?{' '}
-              <Link href="/login" className="font-medium text-purple-400 hover:text-purple-300">
+              <Link href="/login" className="font-medium text-[#0096c7] hover:text-[#0077b6]">
                 Sign in
               </Link>
             </p>
@@ -228,10 +230,10 @@ export default function RegisterPage() {
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-600" />
+                <div className="w-full border-t border-[#90e0ef]" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-800 text-gray-500">OR</span>
+                <span className="px-2 bg-[#caf0f8] text-[#48cae4]">OR</span>
               </div>
             </div>
 
@@ -239,9 +241,8 @@ export default function RegisterPage() {
               <div>
                 <button
                   type="button"
-                  // onClick={handleGoogleSignIn} // Bạn cần triển khai logic này
-                  disabled // Tạm thời disable
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 focus:ring-offset-gray-800 disabled:opacity-50"
+                  disabled
+                  className="w-full inline-flex justify-center py-2 px-4 border border-[#90e0ef] rounded-md shadow-sm bg-[#ade8f4] text-sm font-medium text-[#0077b6] hover:bg-[#caf0f8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00b4d8] focus:ring-offset-[#caf0f8] disabled:opacity-50 transition-all"
                 >
                   <FaGoogle className="mr-2 h-5 w-5" />
                   Google
@@ -250,9 +251,8 @@ export default function RegisterPage() {
               <div>
                 <button
                   type="button"
-                  // onClick={handleFacebookSignIn} // Bạn cần triển khai logic này
-                  disabled // Tạm thời disable
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 focus:ring-offset-gray-800 disabled:opacity-50"
+                  disabled
+                  className="w-full inline-flex justify-center py-2 px-4 border border-[#90e0ef] rounded-md shadow-sm bg-[#ade8f4] text-sm font-medium text-[#0077b6] hover:bg-[#caf0f8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00b4d8] focus:ring-offset-[#caf0f8] disabled:opacity-50 transition-all"
                 >
                   <FaFacebookF className="mr-2 h-5 w-5" />
                   Facebook

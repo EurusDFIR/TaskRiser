@@ -40,7 +40,8 @@ export default async function handler(req, res) {
     );
 
     // Không trả về passwordHash
-    const { passwordHash, ...userWithoutPassword } = user;
+    const userWithoutPassword = { ...user };
+    delete userWithoutPassword.passwordHash;
 
     res.status(200).json({
       message: 'Login successful',

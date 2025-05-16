@@ -49,9 +49,12 @@ async function handler(req, res) {
       // --- LOGIC TÍNH EXP ĐƠN GIẢN ---
       if (updatedTask.status === 'Completed') {
         let expGained = 0;
-        if (updatedTask.difficulty === 'Easy') expGained = 10;
-        else if (updatedTask.difficulty === 'Medium') expGained = 30;
-        else if (updatedTask.difficulty === 'Hard') expGained = 50;
+        if (updatedTask.difficulty === 'E-Rank') expGained = 10;
+        else if (updatedTask.difficulty === 'D-Rank') expGained = 20;
+        else if (updatedTask.difficulty === 'C-Rank') expGained = 30;
+        else if (updatedTask.difficulty === 'B-Rank') expGained = 40;
+        else if (updatedTask.difficulty === 'A-Rank') expGained = 50;
+        else if (updatedTask.difficulty === 'S-Rank') expGained = 100;
 
         if (expGained > 0) {
           await prisma.user.update({

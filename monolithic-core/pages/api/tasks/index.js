@@ -15,9 +15,9 @@ async function handler(req, res) {
     }
 
     // Kiểm tra difficulty có hợp lệ không (tùy chọn, có thể làm ở schema Prisma)
-    const validDifficulties = ['Easy', 'Medium', 'Hard'];
+    const validDifficulties = ['E-Rank', 'D-Rank', 'C-Rank', 'B-Rank', 'A-Rank', 'S-Rank'];
     if (!validDifficulties.includes(difficulty)) {
-        return res.status(400).json({ message: 'Invalid difficulty. Must be Easy, Medium, or Hard.' });
+        return res.status(400).json({ message: 'Invalid difficulty. Must be one of: ' + validDifficulties.join(', ') });
     }
 
     try {
