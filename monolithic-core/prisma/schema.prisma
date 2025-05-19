@@ -10,14 +10,17 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  username    String   @unique
-  email       String   @unique
-  passwordHash String // Sẽ lưu password đã hash
-  totalExp    Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  tasks       Task[]   // Quan hệ một-nhiều với Task
+  id            String    @id @default(cuid())
+  username      String    @unique
+  email         String    @unique
+  passwordHash  String?
+  provider      String    @default("local") // local, google
+  providerId    String?   // ID from OAuth provider
+  avatar        String?   // Profile picture URL
+  totalExp      Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  tasks         Task[]   // Quan hệ một-nhiều với Task
 }
 
 model Task {
@@ -28,5 +31,5 @@ model Task {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   user        User     @relation(fields: [userId], references: [id])
-  userId      Int
+  userId      String
 }

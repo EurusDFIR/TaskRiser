@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { GoogleLogin } from '@react-oauth/google';
+import { FaGithub } from 'react-icons/fa';
 
 // Solo Leveling inspired icons
 import { FaEye, FaEyeSlash, FaGoogle, FaFacebookF } from 'react-icons/fa';
@@ -180,14 +182,45 @@ export default function LoginPage() {
 
             <div className="mt-6 grid grid-cols-2 gap-3">
               <div>
-                <button
-                  type="button"
-                  disabled
-                  className="w-full inline-flex justify-center py-2 px-4 border border-[#90e0ef] rounded-md shadow-sm bg-[#ade8f4] text-sm font-medium text-[#0077b6] hover:bg-[#caf0f8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00b4d8] focus:ring-offset-[#caf0f8] disabled:opacity-50 transition-all"
-                >
-                  <FaGoogle className="mr-2 h-5 w-5" />
-                  Google
-                </button>
+                <GoogleLogin
+                  onSuccess={credentialResponse => {
+                    fetch('/api/auth/google', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ token: credentialResponse.credential }),
+                    })
+                      .then(async (res) => {
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.message || 'Google authentication failed');
+                        localStorage.setItem('authToken', data.token);
+                        if (data.user) {
+                          const userDataToStore = {
+                            username: data.user.username || 'Unknown Hunter',
+                            totalExp: data.user.totalExp || 0,
+                            avatar: data.user.avatar,
+                            ...(data.user || {})
+                          };
+                          localStorage.setItem('userData', JSON.stringify(userDataToStore));
+                        }
+                        toast.success('System Access Granted. Welcome, Hunter.', {
+                          iconTheme: { primary: '#8b5cf6', secondary: '#fff' },
+                          style: { background: '#111827', color: '#e5e7eb', border: '1px solid #374151' },
+                        });
+                        router.push('/dashboard');
+                      })
+                      .catch(err => {
+                        toast.error(err.message || 'System Access Denied.', {
+                          style: { background: '#111827', color: '#e5e7eb', border: '1px solid #374151' },
+                        });
+                        setError(err.message);
+                      });
+                  }}
+                  onError={() => {
+                    toast.error('Google authentication failed', {
+                      style: { background: '#111827', color: '#e5e7eb', border: '1px solid #374151' },
+                    });
+                  }}
+                />
               </div>
               <div>
                 <button
@@ -195,8 +228,8 @@ export default function LoginPage() {
                   disabled
                   className="w-full inline-flex justify-center py-2 px-4 border border-[#90e0ef] rounded-md shadow-sm bg-[#ade8f4] text-sm font-medium text-[#0077b6] hover:bg-[#caf0f8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00b4d8] focus:ring-offset-[#caf0f8] disabled:opacity-50 transition-all"
                 >
-                  <FaFacebookF className="mr-2 h-5 w-5" />
-                  Facebook
+                  <FaGithub className="mr-2 h-5 w-5" />
+                  GitHub
                 </button>
               </div>
             </div>
