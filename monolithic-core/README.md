@@ -13,7 +13,7 @@ Task Dungeon là một ứng dụng quản lý nhiệm vụ (task/quest) gamific
 ### 1. Clone repository
 
 ```bash
-git clone <repo-url>
+[git clone <repo-url>](https://github.com/EurusDFIR/TaskRiser.git)
 cd monolithic-core
 ```
 
