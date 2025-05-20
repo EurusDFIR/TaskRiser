@@ -1,5 +1,5 @@
 // monolithic-core/pages/login.js
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -21,6 +21,33 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // Check if already logged in
+  useEffect(() => {
+    // Check if there's a session error parameter in the URL
+    const sessionError = router.query.session;
+    if (sessionError === 'expired' || sessionError === 'invalid') {
+      // Show error message for invalid/expired session
+      toast.error('Session expired or invalid. Please log in again.', {
+        style: { background: '#111827', color: '#e5e7eb', border: '1px solid #374151' },
+        icon: <BsExclamationOctagonFill className="text-[#0077b6]" />,
+      });
+
+      // Clear localStorage token since it's invalid
+      localStorage.removeItem('authToken');
+      document.cookie = "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      return;
+    }
+
+    // Normal login check (only if no session error)
+    if (!sessionError) {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        // If token exists, redirect to dashboard
+        router.push('/dashboard');
+      }
+    }
+  }, [router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,10 +76,31 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
+        // Special handling for database connection errors
+        if (data.error === 'database_error') {
+          setError('Database connection error. Please make sure your PostgreSQL server is running.');
+          toast.error(
+            <div>
+              <p className="font-bold">Database Connection Error</p>
+              <p className="text-sm">Please follow the steps in the DATABASE_SETUP.md file to set up PostgreSQL.</p>
+            </div>,
+            {
+              duration: 6000,
+              style: { background: '#111827', color: '#e5e7eb', border: '1px solid #374151' },
+              icon: <BsExclamationOctagonFill className="text-red-500" />
+            }
+          );
+          throw new Error('Database connection error');
+        }
+
         throw new Error(data.message || 'Invalid Hunter ID or Authentication Code.');
       }
 
+      // Store token in localStorage
       localStorage.setItem('authToken', data.token);
+      // Set token in cookie for middleware to access
+      document.cookie = `authToken=${data.token}; path=/; max-age=3600;`;
+
       if (data.user) {
         const userDataToStore = {
           username: data.user.username || 'Unknown Hunter',
@@ -66,12 +114,58 @@ export default function LoginPage() {
         iconTheme: { primary: '#8b5cf6', secondary: '#fff' },
         style: toastStyle,
       });
-      router.push('/dashboard');
+
+      console.log('Login successful, redirecting to dashboard...');
+      // Use direct navigation instead of router.push
+      window.location.href = '/dashboard';
     } catch (err) {
       toast.error(err.message || 'System Access Denied.', { style: toastStyle });
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // For Google login success handler
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const res = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: credentialResponse.credential }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Google authentication failed');
+
+      // Store token in localStorage
+      localStorage.setItem('authToken', data.token);
+      // Set token in cookie for middleware to access
+      document.cookie = `authToken=${data.token}; path=/; max-age=3600;`;
+
+      if (data.user) {
+        const userDataToStore = {
+          username: data.user.username || 'Unknown Hunter',
+          totalExp: data.user.totalExp || 0,
+          avatar: data.user.avatar,
+          ...(data.user || {})
+        };
+        localStorage.setItem('userData', JSON.stringify(userDataToStore));
+      }
+
+      toast.success('System Access Granted. Welcome, Hunter.', {
+        iconTheme: { primary: '#8b5cf6', secondary: '#fff' },
+        style: { background: '#111827', color: '#e5e7eb', border: '1px solid #374151' },
+      });
+
+      console.log('Google login successful, redirecting to dashboard...');
+      // Use direct navigation instead of router.push
+      window.location.href = '/dashboard';
+    } catch (err) {
+      toast.error(err.message || 'System Access Denied.', {
+        style: { background: '#111827', color: '#e5e7eb', border: '1px solid #374151' },
+      });
+      setError(err.message);
     }
   };
 
@@ -183,38 +277,7 @@ export default function LoginPage() {
             <div className="mt-6 grid grid-cols-2 gap-3">
               <div>
                 <GoogleLogin
-                  onSuccess={credentialResponse => {
-                    fetch('/api/auth/google', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ token: credentialResponse.credential }),
-                    })
-                      .then(async (res) => {
-                        const data = await res.json();
-                        if (!res.ok) throw new Error(data.message || 'Google authentication failed');
-                        localStorage.setItem('authToken', data.token);
-                        if (data.user) {
-                          const userDataToStore = {
-                            username: data.user.username || 'Unknown Hunter',
-                            totalExp: data.user.totalExp || 0,
-                            avatar: data.user.avatar,
-                            ...(data.user || {})
-                          };
-                          localStorage.setItem('userData', JSON.stringify(userDataToStore));
-                        }
-                        toast.success('System Access Granted. Welcome, Hunter.', {
-                          iconTheme: { primary: '#8b5cf6', secondary: '#fff' },
-                          style: { background: '#111827', color: '#e5e7eb', border: '1px solid #374151' },
-                        });
-                        router.push('/dashboard');
-                      })
-                      .catch(err => {
-                        toast.error(err.message || 'System Access Denied.', {
-                          style: { background: '#111827', color: '#e5e7eb', border: '1px solid #374151' },
-                        });
-                        setError(err.message);
-                      });
-                  }}
+                  onSuccess={handleGoogleSuccess}
                   onError={() => {
                     toast.error('Google authentication failed', {
                       style: { background: '#111827', color: '#e5e7eb', border: '1px solid #374151' },
@@ -240,15 +303,7 @@ export default function LoginPage() {
       <footer className="absolute bottom-4 text-center w-full text-xs text-[#A480F2]/60 z-0">
         Hunter Network Protocol v2.7 | Unauthorized access will be prosecuted by the Hunter Association.
       </footer>
-      <style jsx global>{`
-          @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap');
-          body {
-              font-family: 'Orbitron', sans-serif; /* Applied more broadly for consistency */
-          }
-          .animation-delay-2000 {
-              animation-delay: 2s;
-          }
-      `}</style>
+      <style jsx global>{`            .animation-delay-2000 {                animation-delay: 2s;            }        `}</style>
     </>
   );
 }

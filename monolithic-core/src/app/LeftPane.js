@@ -2,14 +2,16 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FaBars, FaChevronLeft, FaChevronRight, FaSignOutAlt, FaTachometerAlt, FaMedal, FaTasks, FaUserCircle } from 'react-icons/fa';
+import { FaBars, FaChevronLeft, FaChevronRight, FaSignOutAlt, FaTachometerAlt, FaMedal, FaTasks, FaUserCircle, FaColumns, FaChartLine } from 'react-icons/fa';
 import { GiSpikedDragonHead } from 'react-icons/gi';
 
 const NAV_ITEMS = [
   { label: 'Profile', icon: <FaUserCircle />, href: '/profile' },
   { label: 'Dashboard', icon: <FaTachometerAlt />, href: '/dashboard' },
+  { label: 'Kanban', icon: <FaColumns />, href: '/kanban' },
   { label: 'Ranking', icon: <FaMedal />, href: '/ranking' },
   { label: 'Quests', icon: <FaTasks />, href: '/dashboard#quests' },
+  { label: 'Performance', icon: <FaChartLine />, href: '/performance-test' },
 ];
 
 export default function LeftPane({ userData, onLogout, activePath }) {
@@ -32,7 +34,7 @@ export default function LeftPane({ userData, onLogout, activePath }) {
   };
 
   return (
-    <aside className={`fixed top-0 left-0 h-screen z-40 bg-[#f8fdff]/90 border-r border-[#90e0ef]/60 shadow-xl flex flex-col transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'} min-w-[60px]`}> 
+    <aside className={`fixed top-0 left-0 h-screen z-40 bg-[#f8fdff]/90 border-r border-[#90e0ef]/60 shadow-xl flex flex-col transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'} min-w-[60px]`}>
       {/* Collapse/Expand Button */}
       <button
         className="absolute top-4 right-[-18px] bg-[#caf0f8] border border-[#90e0ef] rounded-full p-1 shadow-md hover:bg-[#ade8f4] transition-all z-50"
@@ -64,8 +66,22 @@ export default function LeftPane({ userData, onLogout, activePath }) {
       <div className={`mt-auto mb-4 px-4 flex flex-col gap-2 ${collapsed ? 'items-center' : ''}`}>
         {userData && (
           <div className={`flex items-center gap-2 ${collapsed ? 'justify-center' : ''}`}>
-            <div className="w-8 h-8 rounded-full bg-[#90e0ef] flex items-center justify-center text-[#0077b6] font-bold text-lg">
-              {userData.username?.charAt(0).toUpperCase() || 'H'}
+            <div className="w-8 h-8 rounded-full overflow-hidden bg-[#90e0ef] flex items-center justify-center text-[#0077b6] font-bold text-lg relative">
+              {userData.avatar ? (
+                <img
+                  src={userData.avatar}
+                  alt={userData.username || 'User'}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.style.display = 'none';
+                    e.target.parentNode.querySelector('.fallback-text').style.display = 'flex';
+                  }}
+                />
+              ) : null}
+              <span className="fallback-text absolute inset-0 flex items-center justify-center">
+                {userData.username?.charAt(0).toUpperCase() || 'H'}
+              </span>
             </div>
             {!collapsed && <span className="font-semibold text-[#0077b6] text-sm truncate max-w-[120px]">{userData.username}</span>}
           </div>
