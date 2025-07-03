@@ -1,0 +1,24 @@
+# Node
+node_modules/
+client/.next/
+**/dist/
+**/build/
+
+# IDE
+.vscode/
+.idea/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# System
+.DS_Store
+*.log
+*.env
+*.local
+
+# Legacy/Not used
+monolithic-core/
+docs/
